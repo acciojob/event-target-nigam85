@@ -4,15 +4,33 @@ class EventTarget {
     }
   
     addEventListener(event, callback) {
-      
+		    // Check if the event is not in the listeners object, create an array for it
+		 if (!this.listeners[event]) {
+	      this.listeners[event] = [];
     }
+    }
+	// Check if the callback is not already in the event's listeners
+    if (!this.listeners[event].includes(callback)) {
+      this.listeners[event].push(callback);
+    }
+  }
   
     removeEventListener(event, callback) {
-      
+       // Check if the event exists and has listeners
+    if (this.listeners[event]) {
+      // Filter out the specified callback from the event's listeners
+      this.listeners[event] = this.listeners[event].filter(fn => fn !== callback);
+    }
+  }
+
     }
   
     dispatchEvent(event) {
-    
+    // Check if the event has listeners
+    if (this.listeners[event]) {
+      // Invoke all callbacks for the event
+      this.listeners[event].forEach(callback => callback());
+    }
     }
     
   }
